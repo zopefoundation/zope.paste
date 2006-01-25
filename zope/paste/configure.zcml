@@ -1,0 +1,26 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml">
+
+
+  <configure zcml:condition="have zserver">
+    <utility
+        name="Paste.Main"
+        component="._server.http"
+        provides="zope.app.server.servertype.IServerType"
+        />
+  </configure>
+
+  <configure zcml:condition="have twisted">
+    <utility
+        name="Paste.Main"
+        component="._twisted.http"
+        provides="zope.app.twisted.interfaces.IServerType"
+        />
+  </configure>
+
+  <subscriber
+      handler=".application.databaseOpened"
+      for="zope.app.appsetup.IDatabaseOpenedEvent"
+      />
+
+</configure>
