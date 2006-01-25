@@ -19,15 +19,15 @@ How to use it?
 Configuration is very simple. There are three steps that need to be
 performed:
 
-1. Configure a named IServerType utility
+1. Configure a named IServerType utility (by default, we already
+   define a utility named `Paste.Main`).
 
 2. Change the <server> directive on <INSTANCE_HOME>/etc/zope.conf to
-   use the newly-created IServerType utility
+   use the newly-created 'IServerType' utility (out of the box, you
+   can just swap out 'HTTP' or 'WSGI-HTTP' by 'Paste.Main').
 
 3. Configure a WSGI application using `paste.deploy`_ syntax in
    <INSTANCE_HOME>/etc/paste.ini
-
-By default, we already define a utility named `Paste.Main`.
 
 Here's an example of how to configure the `Paste.Main` application
 using paste.deploy to use the Zope 3 publisher as a WSGI app:
