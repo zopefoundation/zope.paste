@@ -34,9 +34,10 @@ from setuptools import setup, find_packages
 
 # We're using the module docstring as the distutils descriptions.
 doclines = __doc__.split("\n")
+VERSION = "0.1"
 
 setup(name="zope.paste",
-      version="0.1",
+      version=VERSION,
       author="Sidnei da Silva",
       author_email="sidnei@enfoldsystems.com",
       keywords="web wsgi application server",
