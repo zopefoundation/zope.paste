@@ -158,7 +158,7 @@ Now, this far we only worked with a single WSGI application. If you
 wanted to host *more* than one WSGI application there are a couple
 ways of doing it:
 
-1. Using a `composte application` as described in `paste.deploy`_.
+1. Using a `composite application` as described in `paste.deploy`_.
 
 2. Setting up extra `IServerType` utilities.
 
