@@ -52,4 +52,9 @@ setup(name="zope.paste",
       packages=find_packages(exclude='tests'),
       package_data={'zope.paste': ['*.zcml']},
       zip_safe=False,
+      install_requires=['PasteDeploy'],
+      entry_points = """
+      [paste.app_factory]
+      main = zope.paste.factory:zope_app_factory
+      """
       )
