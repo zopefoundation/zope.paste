@@ -1,0 +1,5 @@
+<schema>
+  <import package="ZODB" />
+  <multisection type="ZODB.database" name="*" required="yes"
+                attribute="databases" />
+</schema>
