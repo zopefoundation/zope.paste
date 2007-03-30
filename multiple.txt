@@ -1,0 +1,88 @@
+Multiple WSGI applications within Zope 3
+========================================
+
+If you wanted to host *more* than one WSGI application there are a
+couple ways of doing it:
+
+1. Using a *composite application* as described in PasteDeploy_.
+
+2. Setting up extra `IServerType` utilities.
+
+I'm going to show you how to do the latter now.
+
+The trick here is that you have the option to use both the `zserver`
+and the `twisted` WSGI servers. `zope.paste` is just glue code, so we
+defined a `IServerType` utility for each, and the only thing special
+is that the utility name is passed on to the WSGI application factory.
+
+Here's an excerpt from the `configure.zcml` as found on this package::
+
+  <configure zcml:condition="have zserver">
+    <utility
+        name="Paste.Main"
+        component="._server.http"
+        provides="zope.app.server.servertype.IServerType"
+        />
+  </configure>
+
+  <configure zcml:condition="have twisted">
+    <utility
+        name="Paste.Main"
+        component="._twisted.http"
+        provides="zope.app.twisted.interfaces.IServerType"
+        />
+  </configure>
+
+Depending on which server is available, the right `IServerType`
+utility is registered. You are encouraged to use the same pattern when
+defining yours.
+
+So suppose you want to have a second WSGI application. Here's how you
+could do it.
+
+1. Create a new `IServerType` utility. This excerpt could be added to
+   a `configure.zcml` in your own package, or to a standalone file in
+   `etc/package_includes`::
+
+  <configure zcml:condition="have zserver">
+    <utility
+        name="Paste.Another"
+        component="zope.paste._server.http"
+        provides="zope.app.server.servertype.IServerType"
+        />
+  </configure>
+
+  <configure zcml:condition="have twisted">
+    <utility
+        name="Paste.Another"
+        component="zope.paste._twisted.http"
+        provides="zope.app.twisted.interfaces.IServerType"
+        />
+  </configure>
+
+2. Change your `zope.conf` file to define a new server, using the
+   newly-created `Paste.Another` utility::
+
+     <server>
+       type Paste.Main
+       address 8080
+     </server>
+
+     <server>
+       type Paste.Another
+       address 8180
+     </server>
+
+3. Define a WSGI application `Paste.Another` in `paste.ini`::
+
+     [pipeline:Paste.Main]
+     pipeline = xslt main
+
+     [app:main]
+     paste.app_factory = zope.paste.application:zope_publisher_app_factory
+
+     [filter:xslt]
+     paste.filter_factory = xslfilter:filter_factory
+
+     [app:Paste.Another]
+     paste.app_factory = zope.paste.application:zope_publisher_app_factory

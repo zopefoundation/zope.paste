@@ -12,11 +12,10 @@
 #
 ##############################################################################
 """zope.paste - wsgi applications in zope 3 using paste.deploy
-
-zope.paste provides the necessary glue to enable you to use
-paste.deploy to configure wsgi apps in zope 3. includes a app_factory
-for the zope 3 wsgi zope.app.publisher application.
 """
+import os
+import sys
+from setuptools import setup, find_packages
 
 classifiers = """\
 Development Status :: 3 - Alpha
@@ -28,33 +27,23 @@ Topic :: Internet :: WWW/HTTP
 Topic :: Software Development :: Libraries :: Python Modules
 """
 
-import os
-import sys
-from setuptools import setup, find_packages
-
-# We're using the module docstring as the distutils descriptions.
-doclines = __doc__.split("\n")
-VERSION = "0.1"
-
 setup(name="zope.paste",
-      version=VERSION,
+      version=open('version.txt').read().strip(),
       author="Sidnei da Silva",
       author_email="sidnei@enfoldsystems.com",
+      description="Zope 3 and PasteDeploy",
+      long_description=open('README.txt').read(),
       keywords="web wsgi application server",
       url="http://cheeseshop.python.org/pypi/zope.paste",
-      download_url="http://cheeseshop.python.org/packages/source/z/zope.paste/zope.paste-%s.tar.gz" % VERSION,
       license="Zope Public License",
       platforms=["any"],
-      description=doclines[0],
       classifiers=filter(None, classifiers.split("\n")),
-      long_description="\n".join(doclines[2:]),
       namespace_packages=['zope'],
       packages=find_packages(exclude='tests'),
-      package_data={'zope.paste': ['*.zcml']},
+      include_package_data=True,
       zip_safe=False,
       install_requires=['PasteDeploy'],
       entry_points = """
       [paste.app_factory]
       main = zope.paste.factory:zope_app_factory
-      """
-      )
+      """)

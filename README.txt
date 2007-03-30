@@ -1,252 +1,173 @@
-zope.paste - wsgi applications in zope 3 using paste.deploy
-===========================================================
+zope.paste - Zope 3 and PasteDeploy
+===================================
 
-What is it?
------------
+zope.paste allows you to
 
-A simple package that enables one to configure WSGI applications to
-run inside Zope 3 using `paste.deploy`_.
+* employ WSGI middlewares inside a Zope 3 application
 
-Why?
-----
+* deploy the Zope 3 application server on any WSGI-capable webserver
 
-Because Zope 3 already supported WSGI applications, but didn't provide
-a simple way to create and configure them.
+using PasteDeploy_.  These are two completely different modi operandi
+which only have in common that they are facilitate PasteDeploy_.  Each
+is explained in detail below.
 
-How to use it?
---------------
+.. _PasteDeploy: http://pythonpaste.org/deploy/
 
-Short version
-+++++++++++++
 
-Configuration is very simple. There are three steps that need to be
-performed:
+WSGI middlewares inside Zope 3
+------------------------------
 
-1. Configure a named IServerType utility (by default, we already
-   define a utility named `Paste.Main`).
+zope.paste allows you to stack WSGI middlewares on top of Zope 3's
+publisher application without changing the way you configure Zope
+(``zope.conf``) or run it (``runzope``, ``zopectl``).
 
-2. Change the <server> directive on <INSTANCE_HOME>/etc/zope.conf to
-   use the newly-created `IServerType` utility (out of the box, you
-   can just swap out `HTTP` or `WSGI-HTTP` by `Paste.Main`).
+Configuration is very simple.  Assuming that you've already created a
+Zope 3 instance using the ``mkzopeinstance`` script, there are three
+steps that need to be performed:
 
-3. Configure a WSGI application using `paste.deploy`_ syntax in
-   <INSTANCE_HOME>/etc/paste.ini
+Installing and configuring zope.paste
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Here's an example of how to configure the `Paste.Main` application
-using paste.deploy to use the Zope 3 publisher as a WSGI app:
+zope.paste can be installed as an egg anywhere onto your
+``PYTHONPATH`` or simply dropped into your
+``<INSTANCE_HOME>/lib/python`` directory.  Then you need to enable
+zope.paste's ZCML configuration by creating the file
+``<INSTANCE_HOME>/etc/package-includes/zope.paste-configure.zcml``
+with the following contents::
 
-[app:Paste.Main]
-paste.app_factory = zope.paste.application:zope_publisher_app_factory
+  <include package="zope.paste" />
 
-.. _paste.deploy: http://pythonpaste.org/deploy/
+Configuring the server
+~~~~~~~~~~~~~~~~~~~~~~
 
-Long version
-++++++++++++
-
-The narrative below applies to Zope 3.2.
-
-When you create a Zope 3 instance, you have a choice of creating a
-`zope.app.server` (a.k.a. zserver) instance or a `zope.app.twisted`
-instance.
-
-This package works with both, but applications that you develop using
-WSGI might choose to use only one of them.
-
-After creating an instance, you should have a directory with some
-subdirectories like `etc`, `lib`, `var`, `log`, etc. Inside the `etc`
-directory you can find a file named `zope.conf` inside it.
-
-This is the file that contains the bootstrap configuration for
-starting up a Zope 3 server.
-
-Regardless of the flavor you choose (zserver or twisted) you will end
-up with a file that contains something just like this::
-
-  <server>
-    type HTTP
-    address 8080
-  </server>
-
-The part that's most interesting to us here is the `type HTTP`
-line. This is what controls what kind of server will be
-created.
-
-When starting up, upon finding this directive, Zope 3 will lookup a
-`named utility` providing `IServerType`. If you don't know what a
-named utility is, you should go read some documentation before
-proceeding.
-
-Zope 3.2 has some support to WSGI applications. In fact, it does
-define a `IServerType` utility named `WSGI-HTTP`, which is also
-aliased to `HTTP`. So when you start up Zope 3 for the first time,
-you're actually using WSGI already!
-
-This package, `zope.paste` does define a new `IServerType` utility
-named `Paste.Main`. So, effectively, once you have this package
-installed you can change your `zope.conf` file to read::
+We create a ``<server>`` directive in
+``<INSTANCE_HOME>/etc/zope.conf`` to use zope.paste's server
+definition, ``Paste.Main``.  That way the WSGI middlewares will be
+invoked when responses are served through this server::
 
   <server>
     type Paste.Main
-    address 8080
+    address 8081
   </server>
 
-The `Paste.Main` utility defined in this package though doesn't know
-how to create a WSGI application by itself. Instead, it relies on
-`paste.deploy` to create a WSGI application. By default, it will load
-a file named `paste.ini` in the `etc` directory of your Zope 3
-instance.
+Configuring the WSGI stack
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When loading this file it will look for an application with the *same
-name* as the utility defined. So the simplest thing you can do is to
-create the `paste.ini` file with some content as follows::
+Now we configure a WSGI application using PasteDeploy_ syntax in
+``<INSTANCE_HOME>/etc/paste.ini``.  Here's an example of how to
+configure the `Paste.Main` application to use the Zope 3 publisher as
+a WSGI application, therefore doing the exact same thing that the
+regular ``HTTP`` server definition would do::
 
   [app:Paste.Main]
   paste.app_factory = zope.paste.application:zope_publisher_app_factory
 
-What this does is to create a WSGIPublisherApplication, which happens
-to be the same WSGI application that is created when you use the
-`HTTP` or `WSGI-HTTP` server type utilities.
-
-Now, this is a lot of contortion just to do something that Zope 3 does
-out of the box no? Yes, I agree. But this is where stuff starts
-getting fun.
-
-`paste.deploy` allows you to chain various WSGI entities
-together. There seems to be a distinction between 'apps' and 'filters'
-(also referred to as 'middleware'). An example that might interest is
-applying a `XSLT` transformation to the output of the Zope 3 WSGI
-application.
+That's not really interesting, though.  PasteDeploy_ allows you to
+chain various WSGI entities together, which is where it gets
+interesting.  There seems to be a distinction between 'apps' and
+'filters' (also referred to as 'middleware').  An example that might
+be of interest is applying a `XSLT` transformation to the output of
+the Zope 3 WSGI application.
 
 Happily enough, someone seems to have already created a WSGI filter
-for applying a `XSLT` stylesheet. You can find it at::
+for applying a `XSLT` stylesheet.  You can find it at
+http://www.decafbad.com/2005/07/xmlwiki/lib/xmlwiki/xslfilter.py
 
- http://www.decafbad.com/2005/07/xmlwiki/lib/xmlwiki/xslfilter.py
+If you wanted to apply this WSGI filter to Zope 3, you would need
+three things:
 
-If you wanted to apply this WSGI filter to Zope 3, you would need three
-things:
+1. Put the ``xslfilter.py`` file somewhere in ``PYTHONPATH``.
+   ``<INSTANCE>/lib/python`` is a good place.
 
-1. Put the `xslfilter.py` file somewhere in
-   PYTHONPATH. <INSTANCE>/lib/python is a good place.
+2. Add this snippet to the bottom of ``xslfilter.py``::
 
-2. Add this snippet to the bottom of `xslfilter.py`
+     def filter_factory(global_conf, **local_conf):
+         def filter(app):
+             return XSLFilter(app)
+         return filter
 
-::
+3. Change ``paste.ini`` file as follows::
 
-   def filter_factory(global_conf, **local_conf):
-       def filter(app):
-           return XSLFilter(app)
-       return filter
+     [pipeline:Paste.Main]
+     pipeline = xslt main
 
-3. Change the `paste.ini` file as follows
+     [app:main]
+     paste.app_factory = zope.paste.application:zope_publisher_app_factory
 
-::
+     [filter:xslt]
+     paste.filter_factory = xslfilter:filter_factory
 
-   [pipeline:Paste.Main]
-   pipeline = xslt main
+   What this does is to define a *pipeline*.  Learn more about this on
+   the PasteDeploy_ website.  Refer to the source of ``xslfilter.py``
+   for information about how to pass a stylesheet to the filter.
 
-   [app:main]
-   paste.app_factory = zope.paste.application:zope_publisher_app_factory
 
-   [filter:xslt]
-   paste.filter_factory = xslfilter:filter_factory
+Deploying Zope 3 on an WSGI-capable webserver
+---------------------------------------------
 
-What this does is to define a `pipeline`. Learn more about this on the
-`paste.deploy`_ website. Refer to the source of `xslfilter.py` for
-information about how to pass a stylesheet to the filter.
+zope.paste allows you to run Zope 3 on any WSGI-capable webserver
+software using PasteDeploy_.  For this you will no longer need a Zope
+3 instance (though you can still have one), you won't configure Zope 3
+through ``zope.conf`` and won't start it using ``runzope`` or
+``zopectl``.
 
-Now, this far we only worked with a single WSGI application. If you
-wanted to host *more* than one WSGI application there are a couple
-ways of doing it:
+Configuring the application
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-1. Using a `composite application` as described in `paste.deploy`_.
-
-2. Setting up extra `IServerType` utilities.
-
-I'm going to show you how to do the latter now.
-
-The trick here is that as mentioned earlier here, you have the option
-to use both the `zserver` and the `twisted` WSGI servers. `zope.paste`
-is just glue code, so we defined a `IServerType` utility for each, and
-the only thing special is that the utility name is passed on to the
-WSGI application factory.
-
-Here's an excerpt from the `configure.zcml` as found on this package::
-
-  <configure zcml:condition="have zserver">
-    <utility
-        name="Paste.Main"
-        component="._server.http"
-        provides="zope.app.server.servertype.IServerType"
-        />
-  </configure>
-
-  <configure zcml:condition="have twisted">
-    <utility
-        name="Paste.Main"
-        component="._twisted.http"
-        provides="zope.app.twisted.interfaces.IServerType"
-        />
-  </configure>
-
-Depending on which server is available, the right `IServerType`
-utility is registered. You are encouraged to use the same pattern when
-defining yours.
-
-So suppose you want to have a second WSGI application. Here's how you
-could do it.
-
-1. Create a new `IServerType` utility. This excerpt could be added to
-   a `configure.zcml` in your own package, or to a standalone file in
-   `etc/package_includes`
-
-::
-
-  <configure zcml:condition="have zserver">
-    <utility
-        name="Paste.Another"
-        component="zope.paste._server.http"
-        provides="zope.app.server.servertype.IServerType"
-        />
-  </configure>
-
-  <configure zcml:condition="have twisted">
-    <utility
-        name="Paste.Another"
-        component="zope.paste._twisted.http"
-        provides="zope.app.twisted.interfaces.IServerType"
-        />
-  </configure>
-
-2. Change your `zope.conf` file to define a new server, using the
-   newly-created `Paste.Another` utility
-
-::
-
-  <server>
-    type Paste.Main
-    address 8080
-  </server>
-
-  <server>
-    type Paste.Another
-    address 8180
-  </server>
-
-3. Define a WSGI application `Paste.Another` in `paste.ini`
-
-::
-
-  [pipeline:Paste.Main]
-  pipeline = xslt main
+zope.paste provides a PasteDeploy_-compatible factory for Zope 3's
+WSGI publisher application and registers it in an entry point.  We can
+therefore create a very simple Zope 3 application in a PasteDeploy_
+configuration file (e.g. ``paste.ini``)::
 
   [app:main]
-  paste.app_factory = zope.paste.application:zope_publisher_app_factory
+  use = egg:zope.paste
+  site_definition = /path/to/site.zcml
+  file_storage = /path/to/Data.fs
+  devmode = on
 
-  [filter:xslt]
-  paste.filter_factory = xslfilter:filter_factory
+In this case, ``/path/to/site.zcml`` refers to a ``site.zcml`` as
+known from a Zope 3 instance.  You can, for example, put ``paste.ini``
+into an existing Zope 3 instance, next to ``site.zcml``.
 
-  [app:Paste.Another]
-  paste.app_factory = zope.paste.application:zope_publisher_app_factory
+Configuring the ZODB database
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-That's it! For more information, learn about the different ways of
-configuring applications with `paste.deploy`_.
+Instead of referring to a ZODB FileStorage using the ``file_storage``
+setting, you can also configure multiple or other ZODB database
+backends in a ZConfig-style configuration file (much like
+``zope.conf``), e.g. the following configures a ZEO client::
+
+  <zodb>
+    <zeoclient>
+      server localhost:8100
+      storage 1
+      cache-size 20MB
+    </zeoclient>
+  </zodb>
+
+Refer to this file from ``paste.ini`` this way (and delete the
+``file_storage`` setting)::
+
+  db_definition = db.conf
+
+Configuring the server
+~~~~~~~~~~~~~~~~~~~~~~
+
+In order to be able to use our Zope application, we only need to add a
+server definition.  We can use the one that comes with Paste or
+PasteScript_, rather::
+
+  [server:main]
+  use = egg:PasteScript#wsgiutils
+  host = 127.0.0.1
+  port = 8080
+
+.. _PasteScript: http://pythonpaste.org/script/
+
+Now we can start the application using the ``paster`` command that
+comes with PasteScript_::
+
+  $ paster serve paste.ini
+
+WSGI middlewares can be configured like described above or on the
+PasteDeploy_ website.
