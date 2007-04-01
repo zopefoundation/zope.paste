@@ -21,8 +21,13 @@ import zope.app.appsetup
 from zope.app.appsetup.appsetup import multi_database
 from zope.app.wsgi import WSGIPublisherApplication
 
+_zope_app = None
 def zope_app_factory(global_conf, site_definition, file_storage=None,
                      db_definition=None, devmode='no'):
+    global _zope_app
+    if _zope_app is not None:
+        return _zope_app
+
     # relative filenames are understood to be relative to the
     # PasteDeploy configuration file
     def abspath(path):
@@ -55,4 +60,5 @@ def zope_app_factory(global_conf, site_definition, file_storage=None,
     else:
         db = None
 
-    return WSGIPublisherApplication(db)
+    _zope_app = WSGIPublisherApplication(db)
+    return _zope_app
