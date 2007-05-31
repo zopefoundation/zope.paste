@@ -42,7 +42,13 @@ setup(name="zope.paste",
       packages=find_packages(exclude='tests'),
       include_package_data=True,
       zip_safe=False,
-      install_requires=['setuptools', 'PasteDeploy'],
+      install_requires=['setuptools',
+                        'PasteDeploy',
+                        'zope.interface',
+                        'zope.app.appsetup',
+                        'zope.app.wsgi',
+                        'zope.app.twisted',
+                        'zope.app.server'],
       entry_points = """
       [paste.app_factory]
       main = zope.paste.factory:zope_app_factory
