@@ -28,7 +28,7 @@ Topic :: Software Development :: Libraries :: Python Modules
 """
 
 setup(name="zope.paste",
-      version='0.3',
+      version='0.4',
       author="Sidnei da Silva",
       author_email="sidnei@enfoldsystems.com",
       description="Zope 3 and PasteDeploy",
