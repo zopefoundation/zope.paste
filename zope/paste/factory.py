@@ -35,11 +35,18 @@ def zope_app_factory(global_conf, site_definition, file_storage=None,
     filename = os.path.join(global_conf['here'], site_definition)
     zope.app.appsetup.config(filename, features)
 
+    # open database
+    db = database_factory(global_conf, file_storage, db_definition)
+
+    _zope_app = WSGIPublisherApplication(db)
+    return _zope_app
+
+
+def database_factory(global_conf, file_storage=None, db_definition=None):
     if file_storage is not None and db_definition is not None:
         raise TypeError("You may only provide a 'file_storage' or a "
                         "'db_definition' setting, not both.")
 
-    # open database
     if file_storage is not None:
         filename = os.path.join(global_conf['here'], file_storage)
         db = zope.app.appsetup.database(filename)
@@ -55,5 +62,5 @@ def zope_app_factory(global_conf, site_definition, file_storage=None,
     else:
         db = None
 
-    _zope_app = WSGIPublisherApplication(db)
-    return _zope_app
+    return db
+
