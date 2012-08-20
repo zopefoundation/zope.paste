@@ -28,18 +28,12 @@ def zope_app_factory(global_conf, site_definition, file_storage=None,
     if _zope_app is not None:
         return _zope_app
 
-    # relative filenames are understood to be relative to the
-    # PasteDeploy configuration file
-    def abspath(path):
-        if os.path.isabs(path):
-            return path
-        return os.path.join(global_conf['here'], path)
-
     # load ZCML (usually site.zcml)
     features = ()
     if devmode.lower() in ('yes', 'true', 'on'):
         features += ('devmode',)
-    zope.app.appsetup.config(abspath(site_definition), features)
+    filename = os.path.join(global_conf['here'], site_definition)
+    zope.app.appsetup.config(filename, features)
 
     if file_storage is not None and db_definition is not None:
         raise TypeError("You may only provide a 'file_storage' or a "
@@ -47,12 +41,13 @@ def zope_app_factory(global_conf, site_definition, file_storage=None,
 
     # open database
     if file_storage is not None:
-        db = zope.app.appsetup.database(abspath(file_storage))
+        filename = os.path.join(global_conf['here'], file_storage)
+        db = zope.app.appsetup.database(filename)
     elif db_definition is not None:
+        filename = os.path.join(global_conf['here'], db_definition)
         schema_xml = os.path.join(os.path.dirname(__file__), 'schema.xml')
         schema = ZConfig.loadSchema(schema_xml)
-        cfgroot, cfghandlers = ZConfig.loadConfig(
-            schema, abspath(db_definition))
+        cfgroot, cfghandlers = ZConfig.loadConfig(schema, filename)
 
         result, databases = multi_database(cfgroot.databases)
         db = result[0]
