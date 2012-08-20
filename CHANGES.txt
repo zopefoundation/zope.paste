@@ -7,6 +7,15 @@ Change History
 - Add this changelog, reconstructed from svn logs and release dates on
   PyPI.
 
+- Support a 'features' config option in the PasteDeploy INI file, which
+  can contain a space-separated list of feature names.  These can be
+  tested for in ZCML files with the <*directive*
+  zcml:condition="have *featurename*"> syntax.
+
+  Previously the only feature that could be enabled was 'devmode' and
+  it had its own option.  For backwards compatibility, ``devmode = on``
+  adds a 'devmode' feature to the feature list.
+
 
 0.3 (2007-06-02)
 ~~~~~~~~~~~~~~~~

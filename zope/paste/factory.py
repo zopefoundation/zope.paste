@@ -23,13 +23,16 @@ from zope.app.wsgi import WSGIPublisherApplication
 
 _zope_app = None
 def zope_app_factory(global_conf, site_definition, file_storage=None,
-                     db_definition=None, devmode='no'):
+                     db_definition=None, devmode='no', features=''):
     global _zope_app
     if _zope_app is not None:
         return _zope_app
 
     # load ZCML (usually site.zcml)
-    features = ()
+    if isinstance(features, str):
+        features = tuple(features.split())
+    else:
+        features = tuple(features)
     if devmode.lower() in ('yes', 'true', 'on'):
         features += ('devmode',)
     filename = os.path.join(global_conf['here'], site_definition)
