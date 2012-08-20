@@ -14,7 +14,6 @@
 """zope.paste - wsgi applications in zope 3 using paste.deploy
 """
 import os
-import sys
 from setuptools import setup, find_packages
 
 classifiers = """\
@@ -27,12 +26,17 @@ Topic :: Internet :: WWW/HTTP
 Topic :: Software Development :: Libraries :: Python Modules
 """
 
+def read_file(filename):
+    return open(os.path.join(os.path.dirname(__file__), filename)).read()
+
+long_description = read_file('README.txt') + '\n\n' + read_file('CHANGES.txt')
+
 setup(name="zope.paste",
-      version='0.4',
+      version='0.4dev',
       author="Sidnei da Silva",
       author_email="sidnei@enfoldsystems.com",
       description="Zope 3 and PasteDeploy",
-      long_description=open('README.txt').read(),
+      long_description=long_description,
       keywords="web wsgi application server",
       url="http://cheeseshop.python.org/pypi/zope.paste",
       license="Zope Public License",

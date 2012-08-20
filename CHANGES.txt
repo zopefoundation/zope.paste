@@ -1,0 +1,38 @@
+Change History
+--------------
+
+0.4 (unreleased)
+~~~~~~~~~~~~~~~~
+
+- Add this changelog, reconstructed from svn logs and release dates on
+  PyPI.
+
+
+0.3 (2007-06-02)
+~~~~~~~~~~~~~~~~
+
+- Release as an egg with explicit dependencies for zope.app packages.
+
+- Buildoutify the source tree.
+
+
+0.2 (2007-05-29)
+~~~~~~~~~~~~~~~~
+
+- Extended documentation.
+
+- Added a real PasteDeploy application factory. This allows you to run
+  Zope 3 on any WSGI capable server, without integration code.
+
+- Support for devmode.
+
+- Support multiple databases through a config file (specify db_definition
+  instead of file_storage).
+
+- Accept filenames relative to the location of the PasteDeploy INI file.
+
+
+0.1 (2006-01-25)
+~~~~~~~~~~~~~~~~
+
+- Initial release.
