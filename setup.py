@@ -32,7 +32,7 @@ def read_file(filename):
 long_description = read_file('README.txt') + '\n\n' + read_file('CHANGES.txt')
 
 setup(name="zope.paste",
-      version='0.4',
+      version='0.5.dev0',
       author="Sidnei da Silva",
       author_email="sidnei@enfoldsystems.com",
       description="Zope 3 and PasteDeploy",
