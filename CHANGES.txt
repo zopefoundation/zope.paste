@@ -1,7 +1,7 @@
 Change History
 --------------
 
-0.4 (unreleased)
+0.4 (2012-08-21)
 ~~~~~~~~~~~~~~~~
 
 - Add this changelog, reconstructed from svn logs and release dates on
