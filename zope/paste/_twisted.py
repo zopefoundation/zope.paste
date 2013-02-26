@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# Copyright (c) 2006 Zope Corporation and Contributors.
+# Copyright (c) 2006 Zope Foundation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -11,10 +11,8 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+"""Server Type for Twisted
 """
-$Id$
-"""
-
 from twisted.web2 import iweb, log, resource, server, stream, wsgi
 from twisted.web2.channel.http import HTTPFactory
 

@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# Copyright (c) 2007 Zope Corporation and Contributors.
+# Copyright (c) 2007 Zope Foundation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -11,8 +11,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""
-$Id$
+"""Paste ``app_factory`` Entry Point.
 """
 import os.path
 import ZConfig

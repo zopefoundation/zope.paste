@@ -4,7 +4,14 @@ Change History
 0.5 (unreleased)
 ~~~~~~~~~~~~~~~~
 
-- Nothing changed yet.
+- Make ``zope.app.twisted`` and ``zope.app.server`` optional dependencies by
+  putting them into extras. They are not needed at all, if we use PasteScript
+  to start up the application server.
+
+- Added license and copyright file. Also fixed copyright statement in file
+  headers.
+
+- Added manifest.
 
 
 0.4 (2012-08-21)
