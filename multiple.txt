@@ -1,5 +1,5 @@
 Multiple WSGI applications within Zope 3
-========================================
+----------------------------------------
 
 If you wanted to host *more* than one WSGI application there are a
 couple ways of doing it:
@@ -44,21 +44,21 @@ could do it.
    a `configure.zcml` in your own package, or to a standalone file in
    `etc/package_includes`::
 
-  <configure zcml:condition="have zserver">
-    <utility
-        name="Paste.Another"
-        component="zope.paste._server.http"
-        provides="zope.app.server.servertype.IServerType"
-        />
-  </configure>
+    <configure zcml:condition="have zserver">
+      <utility
+          name="Paste.Another"
+          component="zope.paste._server.http"
+          provides="zope.app.server.servertype.IServerType"
+          />
+    </configure>
 
-  <configure zcml:condition="have twisted">
-    <utility
-        name="Paste.Another"
-        component="zope.paste._twisted.http"
-        provides="zope.app.twisted.interfaces.IServerType"
-        />
-  </configure>
+    <configure zcml:condition="have twisted">
+      <utility
+          name="Paste.Another"
+          component="zope.paste._twisted.http"
+          provides="zope.app.twisted.interfaces.IServerType"
+          />
+    </configure>
 
 2. Change your `zope.conf` file to define a new server, using the
    newly-created `Paste.Another` utility::

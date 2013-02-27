@@ -28,6 +28,8 @@ setup(
     long_description=\
         read_file('README.txt') + \
         '\n\n' + \
+        read_file('multiple.txt') + \
+        '\n\n' + \
         read_file('CHANGES.txt'),
     keywords="web wsgi application server paste",
     url="http://pypi.python.org/pypi/zope.paste",
@@ -48,11 +50,17 @@ setup(
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Software Development'
         ],
-      namespace_packages=['zope'],
-      packages=find_packages(exclude='tests'),
+      packages=find_packages('src'),
+      package_dir = {'': 'src'},
+      namespace_packages=['zope',],
       include_package_data=True,
       zip_safe=False,
       extras_require={
+        'test-app': [
+            'zope.app.securitypolicy',
+            'zope.app.zcmlfiles',
+            'zope.security[untrustedpython]',
+            ],
         'twisted': ['zope.app.twisted'],
         'zserver': ['zope.app.server'],
         },

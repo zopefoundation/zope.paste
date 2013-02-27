@@ -1,7 +1,7 @@
 <configure xmlns="http://namespaces.zope.org/zope">
   <include package="zope.security" file="meta.zcml" />
+  <include package="zope.securitypolicy" file="meta.zcml" />
   <include package="zope.i18n" file="meta.zcml" />
-  <include package="zope.app.securitypolicy" file="meta.zcml" />
   <include package="zope.app.zcmlfiles" file="meta.zcml" />
 
   <include package="zope.annotation" />
@@ -16,13 +16,9 @@
   <include package="zope.app.zcmlfiles" />
   <include package="zope.app.securitypolicy" />
   <include package="zope.app.authentication" />
-  <include package="zope.app.catalog" />
-  <include package="zope.app.intid" />
-  <include package="zope.app.keyreference" />
-  <include package="zope.app.twisted" />
 
-  <securityPolicy 
-      component="zope.app.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
+  <securityPolicy
+      component="zope.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
 
   <unauthenticatedPrincipal id="zope.anybody"
                             title="Unauthenticated User" />
@@ -45,7 +41,7 @@
          principal="zope.Anybody" />
   <grant permission="zope.app.dublincore.view"
          principal="zope.Anybody" />
-  
+
   <role id="zope.Manager" title="Site Manager" />
   <role id="zope.Member" title="Site Member" />
   <grantAll role="zope.Manager" />

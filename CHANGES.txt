@@ -4,6 +4,8 @@ Change History
 0.5 (unreleased)
 ~~~~~~~~~~~~~~~~
 
+- Conform to standard ZF project layout.
+
 - Make ``zope.app.twisted`` and ``zope.app.server`` optional dependencies by
   putting them into extras. They are not needed at all, if we use PasteScript
   to start up the application server.
