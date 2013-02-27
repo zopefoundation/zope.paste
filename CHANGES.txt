@@ -4,6 +4,9 @@ Change History
 0.5 (unreleased)
 ~~~~~~~~~~~~~~~~
 
+- Added a new console script to run a paste-configured WSGI server and
+  application.
+
 - Conform to standard ZF project layout.
 
 - Make ``zope.app.twisted`` and ``zope.app.server`` optional dependencies by
