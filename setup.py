@@ -57,9 +57,18 @@ setup(
       zip_safe=False,
       extras_require={
         'test-app': [
-            'zope.app.securitypolicy',
-            'zope.app.zcmlfiles',
-            'zope.security[untrustedpython]',
+            'PasteDeploy',
+            'waitress',
+            'zope.app.publication',
+            'zope.authentication',
+            'zope.browserpage',
+            'zope.component',
+            'zope.error',
+            'zope.principalregistry',
+            'zope.publisher',
+            'zope.security',
+            'zope.site',
+            'zope.traversing',
             ],
         'twisted': ['zope.app.twisted'],
         'zserver': ['zope.app.server'],
@@ -73,4 +82,6 @@ setup(
       entry_points = """
       [paste.app_factory]
       main = zope.paste.factory:zope_app_factory
+      [console_scripts]
+      serve = zope.paste.serve:serve
       """)
