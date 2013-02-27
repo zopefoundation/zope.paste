@@ -57,7 +57,6 @@ setup(
       zip_safe=False,
       extras_require={
         'test-app': [
-            'PasteDeploy',
             'waitress',
             'zope.app.publication',
             'zope.authentication',
