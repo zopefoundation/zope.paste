@@ -1,0 +1,5 @@
+<html>
+  <body>
+    <h1>Hello World, <span tal:replace="view/name">Name</span>!</h1>
+  </body>
+</html>

@@ -1,0 +1,39 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser">
+
+  <include package="zope.app.publication" file="meta.zcml" />
+  <include package="zope.browserpage" file="meta.zcml" />
+  <include package="zope.component" file="meta.zcml" />
+  <include package="zope.publisher" file="meta.zcml" />
+  <include package="zope.security" file="meta.zcml" />
+
+  <include package="zope.app.publication" />
+  <include package="zope.authentication" />
+  <include package="zope.component" />
+  <include package="zope.error" />
+  <include package="zope.principalregistry" />
+  <include package="zope.publisher" />
+  <include package="zope.security" />
+  <include package="zope.site" />
+  <include package="zope.traversing" />
+  <include package="zope.traversing.browser" />
+
+  <securityPolicy
+      component="zope.security.simplepolicies.PermissiveSecurityPolicy" />
+
+  <subscriber
+      handler="zope.app.appsetup.bootstrap.bootStrapSubscriber"
+      for="zope.processlifetime.IDatabaseOpened"
+      />
+
+  <browser:defaultView for="*" name="index.html" />
+  <browser:page
+     name="index.html"
+     for="*"
+     class="zope.paste.test_app.view.HelloWorld"
+     template="hello-world.pt"
+     permission="zope.Public"
+     />
+
+</configure>

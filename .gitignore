@@ -3,6 +3,7 @@
 *.dll
 __pycache__
 src/*.egg-info
+src/zope/paste/test_app/Data*
 
 .installed.cfg
 .tox
