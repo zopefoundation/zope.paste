@@ -1,22 +1,25 @@
 Change History
 --------------
 
-0.5 (unreleased)
-~~~~~~~~~~~~~~~~
+1.0.0a1 (unreleased)
+~~~~~~~~~~~~~~~~~~~~
+
+- Added support for Python 3.3.
+
+- Dropped support for Python 2.4 and 2.5.
+
+- Removed support for employing WSGI middlewares inside a Zope 3
+  application. Only the script-based server startup is now supported.
 
 - Added a new console script to run a paste-configured WSGI server and
   application.
 
 - Conform to standard ZF project layout.
 
-- Make ``zope.app.twisted`` and ``zope.app.server`` optional dependencies by
-  putting them into extras. They are not needed at all, if we use PasteScript
-  to start up the application server.
-
 - Added license and copyright file. Also fixed copyright statement in file
   headers.
 
-- Added manifest.
+- Added ``MANIFEST.in`` and ``tox.ini``.
 
 
 0.4 (2012-08-21)

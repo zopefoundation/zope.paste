@@ -13,9 +13,21 @@
 ##############################################################################
 """Tests.
 """
+import asyncore
 import doctest
-import unittest
+import gc
+import os
 import paste.deploy
+import signal
+import subprocess
+import unittest
+from waitress.server import WSGIServer
+
+try:
+    from urllib2 import urlopen
+except ImportError:
+    # Py3: The location moved.
+    from urllib.request import urlopen
 
 def setUp(test):
     test.orig_loadapp = paste.deploy.loadapp
@@ -86,11 +98,33 @@ def test_basic_serve():
     Start serving app
 
     >>> sys.argv = orig_args
+    """
 
+def test_serving_test_app():
+    """Test serving a real app.
+
+    >>> ini = os.path.join(os.path.dirname(__file__), 'test_app', 'app.ini')
+    >>> import threading
+    >>> from zope.paste import serve
+    >>> server = threading.Thread(target=serve.serve, args=([ini],))
+    >>> server.start()
+    >>> import time; time.sleep(1)
+    serving on http://127.0.0.1:8765
+
+    >>> print(urlopen('http://localhost:8765/').read().decode())
+    <html>
+      <body>
+        <h1>Hello World, Zope App!</h1>
+      </body>
+    </html>
+
+    >>> _ = [asyncore.close_all(obj._map)
+    ...      for obj in gc.get_objects() if isinstance(obj, WSGIServer)]
     """
 
 def test_suite():
     return unittest.TestSuite((
         doctest.DocTestSuite(
-                setUp=setUp, tearDown=tearDown),
+                setUp=setUp, tearDown=tearDown,
+                optionflags=doctest.NORMALIZE_WHITESPACE),
     ))

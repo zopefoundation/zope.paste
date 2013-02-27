@@ -19,9 +19,22 @@ from setuptools import setup, find_packages
 def read_file(filename):
     return open(os.path.join(os.path.dirname(__file__), filename)).read()
 
+TEST_APP_REQUIRES = [
+            'waitress',
+            'zope.app.publication',
+            'zope.authentication',
+            'zope.browserpage',
+            'zope.component',
+            'zope.error',
+            'zope.principalregistry',
+            'zope.publisher',
+            'zope.security',
+            'zope.site',
+            'zope.traversing',
+            ]
 setup(
     name="zope.paste",
-    version='0.5.dev0',
+    version='1.0.0a1.dev0',
     author="Sidnei da Silva and the Zope Community",
     author_email="zope-dev@zope.org",
     description="Zope 3 and PasteDeploy",
@@ -42,8 +55,8 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
-        #'Programming Language :: Python :: 3',
-        #'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: Implementation :: CPython',
         'Natural Language :: English',
         'Operating System :: OS Independent',
@@ -56,21 +69,7 @@ setup(
       include_package_data=True,
       zip_safe=False,
       extras_require={
-        'test-app': [
-            'waitress',
-            'zope.app.publication',
-            'zope.authentication',
-            'zope.browserpage',
-            'zope.component',
-            'zope.error',
-            'zope.principalregistry',
-            'zope.publisher',
-            'zope.security',
-            'zope.site',
-            'zope.traversing',
-            ],
-        'twisted': ['zope.app.twisted'],
-        'zserver': ['zope.app.server'],
+        'test-app': TEST_APP_REQUIRES,
         },
       install_requires=[
             'setuptools',
@@ -78,6 +77,8 @@ setup(
             'zope.interface',
             'zope.app.appsetup',
             'zope.app.wsgi'],
+      tests_require=TEST_APP_REQUIRES,
+      test_suite='zope.paste.tests.test_suite',
       entry_points = """
       [paste.app_factory]
       main = zope.paste.factory:zope_app_factory

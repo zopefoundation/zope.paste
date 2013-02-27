@@ -1,10 +1,12 @@
 *.pyc
 *.so
 *.dll
+*.xml
 __pycache__
 src/*.egg-info
 src/zope/paste/test_app/Data*
 
+.coverage
 .installed.cfg
 .tox
 bin

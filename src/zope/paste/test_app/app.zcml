@@ -27,6 +27,13 @@
       for="zope.processlifetime.IDatabaseOpened"
       />
 
+  <browser:view
+     name="favicon.ico"
+     for="*"
+     class="zope.paste.test_app.view.FavIcon"
+     permission="zope.Public"
+     />
+
   <browser:defaultView for="*" name="index.html" />
   <browser:page
      name="index.html"
