@@ -17,10 +17,13 @@ import asyncore
 import doctest
 import gc
 import os
-import paste.deploy
 import signal
 import subprocess
+import tempfile
+import shutil
 import unittest
+
+import paste.deploy
 from waitress.server import WSGIServer
 
 try:
@@ -30,12 +33,21 @@ except ImportError:
     from urllib.request import urlopen
 
 def setUp(test):
+    test.tmpdir = tempfile.mkdtemp(prefix='zope.paste-', suffix='-test')
+    test.orig_cwd = os.getcwd()
     test.orig_loadapp = paste.deploy.loadapp
     test.orig_loadserver = paste.deploy.loadserver
+    zcml = os.path.join(os.path.dirname(__file__), 'test_app', 'app.zcml')
+    shutil.copy(zcml, os.path.join(test.tmpdir, 'app.zcml'))
+    ini = os.path.join(os.path.dirname(__file__), 'test_app', 'app.ini')
+    shutil.copy(ini, os.path.join(test.tmpdir, 'app.ini'))
+    os.chdir(test.tmpdir)
 
 def tearDown(test):
+    os.chdir(test.orig_cwd)
     paste.deploy.loadapp = test.orig_loadapp
     paste.deploy.loadserver = test.orig_loadserver
+    shutil.rmtree(test.tmpdir)
 
 def test_basic_serve():
     """Starting a paster server
@@ -103,10 +115,9 @@ def test_basic_serve():
 def test_serving_test_app():
     """Test serving a real app.
 
-    >>> ini = os.path.join(os.path.dirname(__file__), 'test_app', 'app.ini')
     >>> import threading
     >>> from zope.paste import serve
-    >>> server = threading.Thread(target=serve.serve, args=([ini],))
+    >>> server = threading.Thread(target=serve.serve, args=(['app.ini'],))
     >>> server.start()
     >>> import time; time.sleep(1)
     serving on http://127.0.0.1:8765
