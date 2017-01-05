@@ -1,7 +1,7 @@
 Change History
 --------------
 
-1.0.0 (unreleased)
+1.0.0 (2017-01-04)
 ~~~~~~~~~~~~~~~~~~
 
 - Changed support from Python 3.3 to 3.5.
