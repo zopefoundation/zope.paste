@@ -1,0 +1,19 @@
+[run]
+branch = True
+source = zope.paste
+
+[report]
+precision = 2
+omit = */interfaces.py
+       */interfaces/*
+       */tests.py
+       */tests/*
+
+[html]
+directory = htmlcov
+
+[paths]
+source =
+   src/zope/paste
+   .tox/*/lib/python*/site-packages/zope/paste
+   .tox/pypy*/site-packages/zope/paste

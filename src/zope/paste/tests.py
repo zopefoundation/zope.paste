@@ -120,7 +120,7 @@ def test_serving_test_app():
     >>> server = threading.Thread(target=serve.serve, args=(['app.ini'],))
     >>> server.start()
     >>> import time; time.sleep(1)
-    serving on http://127.0.0.1:8765
+    Serving on http://localhost:8765
 
     >>> print(urlopen('http://localhost:8765/').read().decode())
     <html>

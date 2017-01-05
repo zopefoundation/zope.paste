@@ -1,10 +1,12 @@
 Change History
 --------------
 
-1.0.0a2 (unreleased)
-~~~~~~~~~~~~~~~~~~~~
+1.0.0 (unreleased)
+~~~~~~~~~~~~~~~~~~
 
-- Nothing changed yet.
+- Changed support from Python 3.3 to 3.5.
+
+- Dropped Python 2.6 support.
 
 
 1.0.0a1 (2013-02-27)
