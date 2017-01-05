@@ -39,11 +39,11 @@ setup(
     author_email="zope-dev@zope.org",
     description="Zope 3 and PasteDeploy",
     long_description=\
-        read_file('README.txt') + \
+        read_file('README.rst') + \
         '\n\n' + \
-        read_file('multiple.txt') + \
+        read_file('multiple.rst') + \
         '\n\n' + \
-        read_file('CHANGES.txt'),
+        read_file('CHANGES.rst'),
     keywords="web wsgi application server paste",
     url="http://pypi.python.org/pypi/zope.paste",
     license='ZPL 2.1',
