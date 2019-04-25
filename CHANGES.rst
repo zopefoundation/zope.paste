@@ -4,7 +4,9 @@ Change History
 1.0.1 (unreleased)
 ~~~~~~~~~~~~~~~~~~
 
-- Nothing changed yet.
+- Add support for Python 3.6, 3.7.
+
+- Dropped Python 2.6 and 3.3 from Travis CI.
 
 
 1.0.0 (2017-01-04)

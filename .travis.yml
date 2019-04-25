@@ -1,12 +1,16 @@
 language: python
-sudo: false
-env:
-    - TOXENV=py26
-    - TOXENV=py27
-    - TOXENV=py33
+dist: xenial
+python:
+  - 2.7
+  - 3.5
+  - 3.6
+  - 3.7
 install:
-    - travis_retry pip install tox
+  - pip install zope.testrunner coverage coveralls
 script:
-    - tox
+  - coverage run -m zope.testrunner --test-path=src --auto-color --auto-progress
+  - coverage report
+after_success:
+  - coveralls
 notifications:
-    email: false
+  email: false
