@@ -45,7 +45,7 @@ setup(
         '\n\n' + \
         read_file('CHANGES.rst'),
     keywords="web wsgi application server paste",
-    url="http://pypi.python.org/pypi/zope.paste",
+    url="https://github.com/zopefoundation/zope.paste",
     license='ZPL 2.1',
       classifiers=[
         'Development Status :: 5 - Production/Stable',
