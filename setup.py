@@ -45,7 +45,7 @@ setup(
         '\n\n' + \
         read_file('CHANGES.rst'),
     keywords="web wsgi application server paste",
-    url="http://pypi.python.org/pypi/zope.paste",
+    url="https://github.com/zopefoundation/zope.paste",
     license='ZPL 2.1',
       classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -56,11 +56,13 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: Implementation :: CPython',
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Topic :: Internet :: WWW/HTTP',
-        'Topic :: Software Development'
+        'Topic :: Software Development',
         ],
       packages=find_packages('src'),
       package_dir = {'': 'src'},
