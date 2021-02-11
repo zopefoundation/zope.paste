@@ -1,0 +1,23 @@
+# Generated from:
+# https://github.com/zopefoundation/meta/tree/master/config/pure-python
+[meta]
+template = "pure-python"
+commit-id = "211d612c86d6754ebe13fad9b7081533bb603ed9"
+
+[python]
+with-appveyor = false
+with-pypy = false
+with-legacy-python = true
+with-docs = false
+with-sphinx-doctests = false
+
+[coverage]
+fail-under = 77
+
+[manifest]
+additional-rules = [
+    "recursive-include src *.ico",
+    "recursive-include src *.in",
+    "recursive-include src *.ini",
+    "recursive-include src *.xml",
+    ]
