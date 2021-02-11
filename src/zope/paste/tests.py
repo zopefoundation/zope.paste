@@ -17,20 +17,23 @@ import asyncore
 import doctest
 import gc
 import os
-import signal
-import subprocess
-import tempfile
 import shutil
+import sys
+import tempfile
 import unittest
 
 import paste.deploy
 from waitress.server import WSGIServer
 
 try:
-    from urllib2 import urlopen
-except ImportError:
-    # Py3: The location moved.
     from urllib.request import urlopen
+except ImportError:
+    # PY2
+    from urllib2 import urlopen
+
+# let every Python version run on its own port to allow parallel runs:
+PORT = 8765 + 10 * sys.version_info.major + sys.version_info.minor
+
 
 def setUp(test):
     test.tmpdir = tempfile.mkdtemp(prefix='zope.paste-', suffix='-test')
@@ -39,15 +42,20 @@ def setUp(test):
     test.orig_loadserver = paste.deploy.loadserver
     zcml = os.path.join(os.path.dirname(__file__), 'test_app', 'app.zcml')
     shutil.copy(zcml, os.path.join(test.tmpdir, 'app.zcml'))
-    ini = os.path.join(os.path.dirname(__file__), 'test_app', 'app.ini')
-    shutil.copy(ini, os.path.join(test.tmpdir, 'app.ini'))
+    ini = os.path.join(os.path.dirname(__file__), 'test_app', 'app.ini.in')
+    with open(ini) as app_ini_in:
+        app_ini_contents = app_ini_in.read()
+        with open(os.path.join(test.tmpdir, 'app.ini'), 'w') as app_ini:
+            app_ini.write(app_ini_contents.format(PORT))
     os.chdir(test.tmpdir)
+
 
 def tearDown(test):
     os.chdir(test.orig_cwd)
     paste.deploy.loadapp = test.orig_loadapp
     paste.deploy.loadserver = test.orig_loadserver
     shutil.rmtree(test.tmpdir)
+
 
 def test_basic_serve():
     """Starting a paster server
@@ -112,6 +120,7 @@ def test_basic_serve():
     >>> sys.argv = orig_args
     """
 
+
 def test_serving_test_app():
     """Test serving a real app.
 
@@ -119,10 +128,10 @@ def test_serving_test_app():
     >>> from zope.paste import serve
     >>> server = threading.Thread(target=serve.serve, args=(['app.ini'],))
     >>> server.start()
-    >>> import time; time.sleep(5)
-    Serving on http://localhost:8765
+    >>> import time; time.sleep(5)  # doctest: +ELLIPSIS
+    Serving on http://localhost:...
 
-    >>> print(urlopen('http://localhost:8765/').read().decode())
+    >>> print(urlopen('http://localhost:{}/'.format(PORT)).read().decode())
     <html>
       <body>
         <h1>Hello World, Zope App!</h1>
@@ -133,9 +142,10 @@ def test_serving_test_app():
     ...      for obj in gc.get_objects() if isinstance(obj, WSGIServer)]
     """
 
+
 def test_suite():
     return unittest.TestSuite((
         doctest.DocTestSuite(
-                setUp=setUp, tearDown=tearDown,
-                optionflags=doctest.NORMALIZE_WHITESPACE),
+            setUp=setUp, tearDown=tearDown,
+            optionflags=doctest.NORMALIZE_WHITESPACE),
     ))
