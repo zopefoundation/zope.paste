@@ -6,7 +6,6 @@ Change History
 
 - Add support for Python 3.6, 3.7, 3.8, 3.9.
 
-- Drop support for Python 2.6 and 3.3.
 
 
 1.0.0 (2017-01-04)
