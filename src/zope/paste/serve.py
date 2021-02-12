@@ -34,6 +34,7 @@ config.add_option(
 
 parser.add_option_group(config)
 
+
 def serve(args=None):
     if args is None:
         args = sys.argv[1:]

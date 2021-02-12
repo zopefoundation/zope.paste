@@ -21,6 +21,8 @@ from zope.app.appsetup.appsetup import multi_database
 from zope.app.wsgi import WSGIPublisherApplication
 
 _zope_app = None
+
+
 def zope_app_factory(global_conf, site_definition, file_storage=None,
                      db_definition=None, devmode='no', features=''):
     global _zope_app
@@ -65,4 +67,3 @@ def database_factory(global_conf, file_storage=None, db_definition=None):
         db = None
 
     return db
-

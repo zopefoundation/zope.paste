@@ -6,4 +6,4 @@ file_storage = Data.fs
 [server:main]
 use = egg:waitress
 host = 127.0.0.1
-port = 8765
+port = {}
