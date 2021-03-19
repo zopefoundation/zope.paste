@@ -128,7 +128,7 @@ def test_serving_test_app():
     >>> from zope.paste import serve
     >>> server = threading.Thread(target=serve.serve, args=(['app.ini'],))
     >>> server.start()
-    >>> import time; time.sleep(5)  # doctest: +ELLIPSIS
+    >>> import time; time.sleep(10)  # doctest: +ELLIPSIS
     Serving on http://localhost:...
 
     >>> print(urlopen('http://localhost:{}/'.format(PORT)).read().decode())
