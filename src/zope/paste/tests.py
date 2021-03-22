@@ -138,7 +138,7 @@ def test_serving_test_app():
     >>> import os.path
     >>> import threading
     >>> from zope.paste import serve
-    >>> app_ini = os.path.join(os.getcwd(), 'app.ini')
+    >>> app_ini = os.path.abspath('app.ini')
     >>> server = threading.Thread(target=serve.serve, args=([app_ini],))
     >>> server.start()
     >>> import time; time.sleep(5)  # doctest: +ELLIPSIS
