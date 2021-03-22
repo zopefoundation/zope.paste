@@ -124,14 +124,27 @@ def test_basic_serve():
 def test_serving_test_app():
     """Test serving a real app.
 
+    Setup logging, so we get the message ``Serving on ...`` into our doctest
+    output:
+
+    >>> import logging
+    >>> logger = logging.getLogger('waitress')
+    >>> logger.addHandler(logging.StreamHandler(sys.stdout))
+    >>> logger.setLevel(logging.INFO)
+
+    Start the app:
+
+    >>> import os
+    >>> import os.path
     >>> import threading
     >>> from zope.paste import serve
-    >>> server = threading.Thread(target=serve.serve, args=(['app.ini'],))
+    >>> app_ini = os.path.join(os.getcwd(), 'app.ini')
+    >>> server = threading.Thread(target=serve.serve, args=([app_ini],))
     >>> server.start()
-    >>> import time; time.sleep(10)  # doctest: +ELLIPSIS
-    Serving on http://localhost:...
+    >>> import time; time.sleep(5)  # doctest: +ELLIPSIS
+    Serving on http://...
 
-    >>> print(urlopen('http://localhost:{}/'.format(PORT)).read().decode())
+    >>> print(urlopen('http://127.0.0.1:{}/'.format(PORT)).read().decode())
     <html>
       <body>
         <h1>Hello World, Zope App!</h1>
