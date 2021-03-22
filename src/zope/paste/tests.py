@@ -129,12 +129,12 @@ def test_serving_test_app():
 
     >>> import logging
     >>> logger = logging.getLogger('waitress')
-    >>> logger.addHandler(logging.StreamHandler(sys.stdout))
+    >>> handler = logging.StreamHandler(sys.stdout)
+    >>> logger.addHandler(handler)
     >>> logger.setLevel(logging.INFO)
 
     Start the app:
 
-    >>> import os
     >>> import os.path
     >>> import threading
     >>> from zope.paste import serve
@@ -153,6 +153,7 @@ def test_serving_test_app():
 
     >>> _ = [asyncore.close_all(obj._map)
     ...      for obj in gc.get_objects() if isinstance(obj, WSGIServer)]
+    >>> logger.removeHandler(handler)
     """
 
 
