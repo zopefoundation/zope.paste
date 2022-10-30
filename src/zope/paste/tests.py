@@ -24,12 +24,7 @@ import unittest
 
 import paste.deploy
 from waitress.server import WSGIServer
-
-try:
-    from urllib.request import urlopen
-except ImportError:
-    # PY2
-    from urllib2 import urlopen
+from urllib.request import urlopen
 
 # let every Python version run on its own port to allow parallel runs:
 PORT = 8765 + 10 * sys.version_info.major + sys.version_info.minor
