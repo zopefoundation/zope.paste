@@ -10,6 +10,9 @@ on:
   # Allow to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  FORCE_COLOR: 1
+
 jobs:
   build:
     strategy:
