@@ -4,7 +4,9 @@ Change History
 1.1.0 (unreleased)
 ~~~~~~~~~~~~~~~~~~
 
-- Add support for Python 3.6, 3.7, 3.8, 3.9.
+- Add support for Python 3.6, 3.7, 3.8, 3.9, 3.10.
+
+- Drop support for Python 2.7 and 3.5.
 
 
 

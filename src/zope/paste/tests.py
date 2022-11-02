@@ -25,6 +25,7 @@ import unittest
 import paste.deploy
 from waitress.server import WSGIServer
 
+
 try:
     from urllib.request import urlopen
 except ImportError:

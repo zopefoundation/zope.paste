@@ -13,10 +13,11 @@
 ##############################################################################
 """Serve a Paste Application.
 """
-import paste.deploy
 import optparse
 import os.path
 import sys
+
+import paste.deploy
 
 
 parser = optparse.OptionParser("%prog [options] <paste-ini>")
