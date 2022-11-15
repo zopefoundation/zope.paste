@@ -19,7 +19,7 @@ import os
 FAVICON_PATH = os.path.join(os.path.dirname(__file__), 'favicon.ico')
 
 
-class FavIcon(object):
+class FavIcon:
 
     def __call__(self):
         self.request.response.setHeader('Content-Type', 'image/x-icon')
@@ -27,5 +27,5 @@ class FavIcon(object):
             return img.read()
 
 
-class HelloWorld(object):
+class HelloWorld:
     name = 'Zope App'
