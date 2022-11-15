@@ -14,11 +14,14 @@
 """Paste ``app_factory`` Entry Point.
 """
 import os.path
+
 import ZConfig
-import zope.event
+
 import zope.app.appsetup
+import zope.event
 from zope.app.appsetup.appsetup import multi_database
 from zope.app.wsgi import WSGIPublisherApplication
+
 
 _zope_app = None
 

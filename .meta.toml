@@ -2,14 +2,14 @@
 # https://github.com/zopefoundation/meta/tree/master/config/pure-python
 [meta]
 template = "pure-python"
-commit-id = "a42b1792f61e841423b04385d644c7e2d4581c1c"
+commit-id = "9e96d80474deebd9f4a001b60c7da2682d925cdd"
 
 [python]
-with-appveyor = false
 with-pypy = false
-with-legacy-python = true
-with-docs = false
+with-legacy-python = false
 with-sphinx-doctests = false
+with-windows = false
+with-future-python = false
 
 [coverage]
 fail-under = 77
