@@ -41,7 +41,7 @@ setup(
     name="zope.paste",
     version='2.0.dev0',
     author="Sidnei da Silva and the Zope Community",
-    author_email="zope-dev@zope.org",
+    author_email="zope-dev@zope.dev",
     description="Zope 3 and PasteDeploy",
     long_description=read_file('README.rst') +
     '\n\n' +
@@ -57,7 +57,6 @@ setup(
             'License :: OSI Approved :: Zope Public License',
             'Programming Language :: Python',
             'Programming Language :: Python :: 3',
-            'Programming Language :: Python :: 3.6',
             'Programming Language :: Python :: 3.7',
             'Programming Language :: Python :: 3.8',
             'Programming Language :: Python :: 3.9',
@@ -74,6 +73,7 @@ setup(
     namespace_packages=['zope', ],
     include_package_data=True,
     zip_safe=False,
+    python_requires='>=3.7',
     extras_require={
         'test-app': TEST_APP_REQUIRES,
         'test': TEST_APP_REQUIRES,
