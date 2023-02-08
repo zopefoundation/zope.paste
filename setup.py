@@ -39,7 +39,7 @@ TEST_APP_REQUIRES = [
 ]
 setup(
     name="zope.paste",
-    version='1.1.1.dev0',
+    version='2.0.dev0',
     author="Sidnei da Silva and the Zope Community",
     author_email="zope-dev@zope.org",
     description="Zope 3 and PasteDeploy",
